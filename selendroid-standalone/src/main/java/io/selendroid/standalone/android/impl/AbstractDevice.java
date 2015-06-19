@@ -29,6 +29,7 @@ import io.selendroid.standalone.android.AndroidDevice;
 import io.selendroid.standalone.android.AndroidSdk;
 import io.selendroid.standalone.exceptions.AndroidDeviceException;
 import io.selendroid.standalone.exceptions.AndroidSdkException;
+import io.selendroid.standalone.exceptions.DeviceOfflineException;
 import io.selendroid.standalone.exceptions.ShellCommandException;
 import io.selendroid.standalone.io.ShellCommand;
 
@@ -178,6 +179,9 @@ public abstract class AbstractDevice implements AndroidDevice {
     try {
       return ShellCommand.exec(command, timeout);
     } catch (ShellCommandException e) {
+      if (e.getMessage().contains("device offline")) {
+        throw new DeviceOfflineException(e);
+      }
       String logMessage = String.format("Could not execute command: %s", command);
       log.log(Level.WARNING, logMessage, e);
       return "";
