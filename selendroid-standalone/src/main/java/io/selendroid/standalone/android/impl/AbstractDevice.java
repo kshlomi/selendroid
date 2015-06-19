@@ -20,7 +20,6 @@ import com.android.ddmlib.TimeoutException;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
 import com.google.common.collect.ObjectArrays;
-
 import io.selendroid.common.SelendroidCapabilities;
 import io.selendroid.server.common.exceptions.SelendroidException;
 import io.selendroid.server.common.model.ExternalStorageFile;
@@ -29,15 +28,9 @@ import io.selendroid.standalone.android.AndroidDevice;
 import io.selendroid.standalone.android.AndroidSdk;
 import io.selendroid.standalone.exceptions.AndroidDeviceException;
 import io.selendroid.standalone.exceptions.AndroidSdkException;
-import io.selendroid.standalone.exceptions.DeviceOfflineException;
 import io.selendroid.standalone.exceptions.ShellCommandException;
 import io.selendroid.standalone.io.ShellCommand;
-
-import org.apache.commons.exec.CommandLine;
-import org.apache.commons.exec.DefaultExecuteResultHandler;
-import org.apache.commons.exec.DefaultExecutor;
-import org.apache.commons.exec.ExecuteWatchdog;
-import org.apache.commons.exec.PumpStreamHandler;
+import org.apache.commons.exec.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -48,10 +41,8 @@ import org.openqa.selenium.Dimension;
 import org.openqa.selenium.logging.LogEntry;
 
 import javax.imageio.ImageIO;
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
@@ -179,9 +170,6 @@ public abstract class AbstractDevice implements AndroidDevice {
     try {
       return ShellCommand.exec(command, timeout);
     } catch (ShellCommandException e) {
-      if (e.getMessage().contains("device offline")) {
-        throw new DeviceOfflineException(e);
-      }
       String logMessage = String.format("Could not execute command: %s", command);
       log.log(Level.WARNING, logMessage, e);
       return "";
