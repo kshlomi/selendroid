@@ -34,8 +34,11 @@ public class WebViewActivity extends Activity {
     settings.setLoadWithOverviewMode(true);
 
     webview.setWebViewClient(new AndroidDriverClient());
-    webview.loadData("<html><body><h1 id='AndroidDriver'>Android driver webview app</h1>" +
+    webview.loadData("<html><body><h1 id='AndroidDriver'>Android driver webview app (Custom user agent)</h1>" +
         "</body></html>", "text/html", "UTF-8");
+
+    // Custom user agent
+    webview.getSettings().setUserAgentString("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.1 (KHTML, like Gecko) Chrome/22.0.1207.1 Safari/537.1");
   }
 
   private class AndroidDriverClient extends WebViewClient {
